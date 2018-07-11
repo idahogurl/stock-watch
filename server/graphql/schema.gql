@@ -3,4 +3,24 @@ scalar JSON
 scalar Date
 scalar Void
 
-#Generate schema using Tuql and paste here
+type Mutation {
+  createStock(symbol: String!): Stock
+  deleteStock(id: UUID!): UUID
+}
+
+type Query {
+  stocks: [Stock]
+}
+
+type Stock {
+  id: UUID!
+  symbol: String!
+  price: Float!,
+  company: String!,
+  chart: [ChartValue],
+}
+
+type ChartValue {
+  x: Date
+  y: Float
+}

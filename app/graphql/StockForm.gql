@@ -1,0 +1,13 @@
+mutation createStock($symbol: String!) {
+  createStock(symbol: $symbol) {
+    id
+    symbol
+    price
+    company
+    chart {
+      x
+      y
+    }
+    __typename
+  }
+}

@@ -1,23 +1,11 @@
-#project-boilerplate
+##project-boilerplate
 
 **Description**: Node Boilerplate for my [freecodecamp](http://www.freecodecamp.com "freecodecamp") projects
 
-**Backend**:
-- Express (v4)
-- Babel (v6 with presets env, react, stage-2)
-- Sequelize (v4)
-- Apollo GraphQL Server (v1.3)
-
-**Database**:
-- Development: SQLITE
-- Production: Postgres on Heroku
-
-**Frontend**:
-- React (v16.4)
-- React Router (v4)
-- React-Facebook to integrate Facebook Login
-- Apollo GraphQL Client (v2.1)
-- Bootstrap (v4)
-- FontAwesome (v4)
-- Fela
-- Awesome Notifications
+Objective: Build a full stack JavaScript app that is functionally similar to this: http://watchstocks.herokuapp.com/ and deploy it to Heroku.
+Here are the specific user stories you should implement for this project:
+User Story: I can view a graph displaying the recent trend lines for each added stock.
+User Story: I can add new stocks by their symbol name.
+User Story: I can remove stocks.
+User Story: I can see changes in real-time when any other user adds or removes a stock. For this you will need to use Web Sockets.
+https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,fb&types=price&range=1m&last=5
