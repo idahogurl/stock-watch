@@ -29,7 +29,7 @@ const httpLink = new HttpLink({
 });
 
 // Create a WebSocket link:
-const WS_HOST = `ws://${window.location.hostname}` || 'ws://localhost';
+const WS_HOST = `ws://${window.location.hostname}`;
 
 const wsLink = new WebSocketLink({
   uri: `${WS_HOST}:5000/subscriptions`,
