@@ -54,6 +54,7 @@
     "react-fela": "^7.3.0",
     "react-vis": "1.10.0",
     "sequelize": "^4.37.7",
+    "sequelize-cli": "^4.0.0",
     "sequelize-heroku": "^2.0.0",
     "subscriptions-transport-ws": "^0.9.12",
     "uuid": "^3.2.1"
@@ -73,7 +74,6 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
     "nodemon": "^1.17.4",
-    "sequelize-cli": "^4.0.0",
     "sqlite3": "^4.0.1",
     "style-loader": "^0.21.0",
     "webpack": "^4.8.3",

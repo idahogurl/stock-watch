@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
   }, {
+    tableName: 'stocks',
     timestamps: false,
     indexes: [{
       name: 'stock_symbol_index',
