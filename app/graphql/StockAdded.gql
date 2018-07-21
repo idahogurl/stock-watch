@@ -1,0 +1,12 @@
+subscription onStockAdded {
+  stockAdded {
+    id
+    symbol
+    price
+    company
+    chart {
+      x
+      y
+    }
+  }
+}

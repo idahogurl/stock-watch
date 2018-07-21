@@ -1,60 +1,88 @@
-import React, { Component } from 'react';
-import { Query, Mutation } from 'react-apollo';
+import React, { Fragment } from 'react';
+import { Query, Subscription } from 'react-apollo';
 import dayjs from 'dayjs';
+import { uniqBy } from 'lodash';
 
 import GET_STOCKS from '../graphql/StockList.gql';
-import DELETE_STOCK from '../graphql/DeleteStock.gql';
+import STOCK_DELETED from '../graphql/StockDeleted.gql';
+import STOCK_ADDED from '../graphql/StockAdded.gql';
 
+import Container from '../components/Container';
+import StockList from '../components/StockList';
 import StockChart from '../components/StockChart';
-import Stock from '../components/Stock';
 import StockForm from '../components/StockForm';
 
 import onError from '../utils/onError';
 
-class IndexScreen extends Component {
-  render() {
-    return (
-      <Query query={GET_STOCKS} pollInterval={0}>
-        {({
-          loading, error, data, stopPolling,
+const IndexScreen = function IndexScreen() {
+  const loadingStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  };
+
+  return (
+    <Query query={GET_STOCKS}>
+      {({
+          loading, error, data,
         }) => {
         if (loading) {
-          return <i className="fa fa-2x fa-spin fa-spinner" />;
+          return (
+            <Container additionalStyle={loadingStyle}>
+              <i className="fa fa-2x fa-spin fa-spinner" />
+            </Container>
+            );
         }
 
         if (error) {
           onError(error || this.state.error);
-          stopPolling();
           return null;
         }
 
         return (
-          <div className="container">
-            <p>From {dayjs().subtract(3, 'month').format('MM-DD-YYYY')} to {dayjs().format('MM-DD-YYYY')} </p>
-            <StockChart stocks={data.stocks} />
-            <div className="d-flex flex-wrap">
-              <Mutation
-                mutation={DELETE_STOCK}
-                update={(cache, { data: { deleteStock } }) => {
-                  const args = { query: GET_STOCKS };
-                  const stored = cache.readQuery(args);
-                  stored.stocks = stored.stocks.filter(c => c.id !== deleteStock.id);
-                  args.data = stored;
-                  cache.writeQuery(args);
-                }}
-              >
-                {mutate => data.stocks.map(s =>
-                  <Stock key={s.id} {...s} mutate={mutate} />)
-              }
-              </Mutation>
-              <StockForm />
+          <Container>
+            <div className="d-flex mt-2 align-items-end">
+              <div className="flex-grow-1"><img src="./images/logo.svg" alt="Stock Watch Logo" /></div>
+              <div>From {dayjs().subtract(3, 'month').format('MM-DD-YYYY')} to {dayjs().format('MM-DD-YYYY')} </div>
             </div>
-          </div>);
+            <Subscription subscription={STOCK_DELETED}>
+              {({ data: deletedData, loading: deleteLoading }) => {
+              /*
+                Get all stocks when loading or undefined deletedData OR
+                Get stocks not equal to the deleted stock
+              */
+              const stocks = data.stocks.filter(s =>
+                  deleteLoading || deletedData === undefined || s.id !== deletedData.stockDeleted);
+
+                return (
+                  <Subscription subscription={STOCK_ADDED}>
+                    {({ data: addData, loading: addLoading }) => {
+                    // To avoid duplicates, filter out the added stock if it exists
+                    if (!addLoading && addData !== undefined) {
+                      console.log('addLoading', addLoading);
+                      console.log('addData', addData);
+                      stocks.push(addData.stockAdded);
+                      console.log(stocks);
+                    }
+
+                    return (
+                      <Fragment>
+                        <StockChart stocks={stocks} />
+                        <div className="d-flex flex-wrap">
+                          <StockList stocks={uniqBy(stocks, 'symbol')} />
+                          <StockForm />
+                        </div>
+                      </Fragment>);
+                    }}
+                  </Subscription>);
+            }}
+            </Subscription>
+          </Container>);
       }
     }
-      </Query>
-    );
-  }
-}
+    </Query>
+  );
+};
 
 export default IndexScreen;

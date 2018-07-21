@@ -12,6 +12,11 @@ type Query {
   stocks: [Stock]
 }
 
+type Subscription {
+  stockAdded: Stock
+  stockDeleted: UUID
+}
+
 type Stock {
   id: UUID!
   symbol: String!

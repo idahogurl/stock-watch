@@ -1,10 +1,14 @@
 import GraphQLToolTypes from 'graphql-tools-types';
+import { PubSub } from 'graphql-subscriptions';
 import UUID from 'uuid/v4';
 import Axios from 'axios';
 import { keyBy, isEmpty } from 'lodash';
 import { Stock } from '../db/models';
 
 const SRV_URL = 'https://api.iextrading.com/1.0/stock/market/batch?symbols=:symbols&types=price,company,chart&range=3m';
+
+const pubsub = new PubSub();
+
 export default {
   UUID: GraphQLToolTypes.UUID({ name: 'UUID', storage: 'string' }),
   JSON: GraphQLToolTypes.JSON({ name: 'JSON' }),
@@ -28,6 +32,7 @@ export default {
       if (result[1]) { // new stock created
         const { price, company: { companyName }, chart } = stockData[symbol];
         const chartData = chart.map(c => ({ x: new Date(c.date), y: c.close }));
+
         const stock = {
           id,
           symbol,
@@ -36,12 +41,17 @@ export default {
           chart: chartData,
         };
 
+        pubsub.publish('stockAdded', { stockAdded: stock });
+
         return stock;
       }
       throw new Error('Symbol already exists');
     },
     async deleteStock(_, { id }) {
       await Stock.destroy({ where: { id } });
+
+      pubsub.publish('stockDeleted', { stockDeleted: id });
+
       return { id };
     },
   },
@@ -65,6 +75,14 @@ export default {
       });
 
       return results;
+    },
+  },
+  Subscription: {
+    stockAdded: {
+      subscribe: () => pubsub.asyncIterator('stockAdded'),
+    },
+    stockDeleted: {
+      subscribe: () => pubsub.asyncIterator('stockDeleted'),
     },
   },
 };
