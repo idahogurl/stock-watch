@@ -29,11 +29,10 @@ const httpLink = new HttpLink({
 });
 
 // Create a WebSocket link:
-const WS_HOST = process.env.WS_HOST || 'ws://localhost';
-const WS_PORT = process.env.WS_PORT || 5000;
+const WS_HOST = `ws://${window.location.hostname}` || 'ws://localhost';
 
 const wsLink = new WebSocketLink({
-  uri: `${WS_HOST}:${WS_PORT}/subscriptions`,
+  uri: `${WS_HOST}:5000/subscriptions`,
   options: { reconnect: true },
 });
 
