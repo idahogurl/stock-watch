@@ -51,7 +51,6 @@ export default {
   Query: {
     async stocks() {
       const stocks = await Stock.findAll({ raw: true });
-      console.log(stocks);
       const stocksBySymbol = keyBy(stocks, 'symbol');
 
       const symbols = Object.keys(stocksBySymbol).join(',');
