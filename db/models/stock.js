@@ -3,22 +3,27 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       allowNull: false,
       primaryKey: true,
-      type: DataTypes.UUID,
+      type: DataTypes.STRING,
     },
-    symbol: {
+    company: {
       allowNull: false,
       type: DataTypes.STRING,
     },
   }, {
-    tableName: 'stocks',
+    tableName: 'Stocks',
     timestamps: false,
     indexes: [{
-      name: 'stock_symbol_index',
+      name: 'stock_id_index',
       method: 'BTREE',
       unique: true,
-      fields: ['symbol'],
+      fields: ['id'],
     },
     ],
   });
+
+  Stock.associate = (models) => {
+    Stock.hasMany(models.Price, { foreignKey: 'id', targetKey: 'symbol' });
+  };
+
   return Stock;
 };

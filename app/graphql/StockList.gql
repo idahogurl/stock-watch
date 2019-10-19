@@ -1,7 +1,6 @@
 query getStocks {
   stocks {
     id
-    symbol
     company
     price
     chart {

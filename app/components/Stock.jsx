@@ -4,17 +4,20 @@ import { FelaComponent } from 'react-fela';
 import Card from './Card';
 
 class Stock extends PureComponent {
-  deleteStock = this.deleteStock.bind(this);
+  constructor() {
+    super();
+    this.deleteStock = this.deleteStock.bind(this);
+  }
 
   deleteStock() {
-    const { mutate, id } = this.props;
+    const { mutate, stock: { id } } = this.props;
     mutate({ variables: { id } })
       .then()
       .catch();
   }
 
   render() {
-    const { symbol, company, price } = this.props;
+    const { stock: { id, company, price } } = this.props;
 
     const buttonStyle = {
       backgroundColor: 'transparent',
@@ -23,32 +26,39 @@ class Stock extends PureComponent {
       cursor: 'pointer',
     };
 
-    const deleteButton = (<FelaComponent
-      style={buttonStyle}
-      render={({ className }) =>
-        <button type="button" className={className} title="Delete Stock" onClick={this.deleteStock}><i className="fa fa-close" /></button>}
-    />);
+    const deleteButton = (
+      <FelaComponent
+        style={buttonStyle}
+        >
+        {({ className }) => <button label="Delete Stock" type="button" className={className} title="Delete Stock" onClick={this.deleteStock}><i className="fa fa-close" /></button>}
+      </FelaComponent>
+    );
 
     const header = (
       <div className="card-header d-flex">
-        <div className="flex-grow-1">{symbol}</div>
+        <div className="flex-grow-1">{id}</div>
         {deleteButton}
-      </div>);
+      </div>
+    );
 
     return (
       <Card border="border-mute" header={header}>
-        Company: {company}<br />
-        Value: ${price} USD
-      </Card>);
+        {`Company: ${company}`}
+        <br />
+        {`Value: $${price.toFixed(2)} USD`}
+      </Card>
+    );
   }
 }
 
 
 Stock.propTypes = {
-  id: PropTypes.string.isRequired,
-  symbol: PropTypes.string.isRequired,
-  company: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
+  stock: PropTypes.shape({
+    id: PropTypes.string,
+    company: PropTypes.string,
+    price: PropTypes.number,
+    chart: PropTypes.array,
+  }).isRequired,
   mutate: PropTypes.func.isRequired,
 };
 

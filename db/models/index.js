@@ -20,12 +20,12 @@ if (process.env.DATABASE_URL) {
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-
+const modelsPath = './db/models';
 fs
-  .readdirSync(__dirname)
+  .readdirSync(modelsPath)
   .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
   .forEach((file) => {
-    var model = sequelize.import(path.join(__dirname, file));
+    var model = sequelize.import(path.resolve(path.join(modelsPath, file)));
     db[model.name] = model;
   });
 

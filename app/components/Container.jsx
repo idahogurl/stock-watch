@@ -15,8 +15,8 @@ const Container = (props) => {
   return (
     <FelaComponent
       style={style}
-      render={({ className }) => <div className={classNames('container', className)}>{props.children}</div>}
-    />
+      >{({ className }) => <div className={classNames('container', className)}>{props.children}</div>}
+    </FelaComponent>
   );
 };
 
