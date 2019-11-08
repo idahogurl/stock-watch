@@ -1,4 +1,1 @@
 node_modules
-*.sqlite3
-.cache
-.DS_STORE

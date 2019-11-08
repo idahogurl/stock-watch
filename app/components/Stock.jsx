@@ -4,20 +4,17 @@ import { FelaComponent } from 'react-fela';
 import Card from './Card';
 
 class Stock extends PureComponent {
-  constructor() {
-    super();
-    this.deleteStock = this.deleteStock.bind(this);
-  }
+  deleteStock = this.deleteStock.bind(this);
 
   deleteStock() {
-    const { mutate, stock: { id } } = this.props;
+    const { mutate, id } = this.props;
     mutate({ variables: { id } })
       .then()
       .catch();
   }
 
   render() {
-    const { stock: { id, company, price } } = this.props;
+    const { symbol, company, price } = this.props;
 
     const buttonStyle = {
       backgroundColor: 'transparent',
@@ -26,39 +23,32 @@ class Stock extends PureComponent {
       cursor: 'pointer',
     };
 
-    const deleteButton = (
-      <FelaComponent
-        style={buttonStyle}
-        >
-        {({ className }) => <button label="Delete Stock" type="button" className={className} title="Delete Stock" onClick={this.deleteStock}><i className="fa fa-close" /></button>}
-      </FelaComponent>
-    );
+    const deleteButton = (<FelaComponent
+      style={buttonStyle}
+      render={({ className }) =>
+        <button type="button" className={className} title="Delete Stock" onClick={this.deleteStock}><i className="fa fa-close" /></button>}
+    />);
 
     const header = (
       <div className="card-header d-flex">
-        <div className="flex-grow-1">{id}</div>
+        <div className="flex-grow-1">{symbol}</div>
         {deleteButton}
-      </div>
-    );
+      </div>);
 
     return (
       <Card border="border-mute" header={header}>
-        {`Company: ${company}`}
-        <br />
-        {`Value: $${price.toFixed(2)} USD`}
-      </Card>
-    );
+        Company: {company}<br />
+        Value: ${price} USD
+      </Card>);
   }
 }
 
 
 Stock.propTypes = {
-  stock: PropTypes.shape({
-    id: PropTypes.string,
-    company: PropTypes.string,
-    price: PropTypes.number,
-    chart: PropTypes.array,
-  }).isRequired,
+  id: PropTypes.string.isRequired,
+  symbol: PropTypes.string.isRequired,
+  company: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
   mutate: PropTypes.func.isRequired,
 };
 

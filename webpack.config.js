@@ -1,22 +1,26 @@
-const nodeExternals = require('webpack-node-externals');
+const path = require('path');
+
+const BUILD_DIR = path.resolve(__dirname, 'public');
+const APP_DIR = path.resolve(__dirname, 'app');
 
 const config = {
-  entry: './index.js',
+  entry: `${APP_DIR}/index.jsx`,
   output: {
-    path: __dirname,
-    filename: 'index.bundle.js',
+    path: BUILD_DIR,
+    filename: 'bundle.js',
   },
   module: {
     rules: [
       {
-        test: /\.(js)$/,
-        use: 'babel-loader',
-        exclude: /node_modules/,
+        test: /\.js|\.jsx$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+        },
       },
       {
-        test: /\.mjs$/,
-        include: /(node_modules)/,
-        type: 'javascript/auto',
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.gql$/,
@@ -24,11 +28,9 @@ const config = {
       },
     ],
   },
-  target: 'node',
   resolve: {
-    extensions: ['*', '.mjs', '.js', '.json', '.gql', '.graphql'],
+    extensions: ['.js', '.jsx', '.json'],
   },
-  externals: [nodeExternals()],
 };
 
 module.exports = config;
