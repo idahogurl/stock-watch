@@ -4,8 +4,8 @@ scalar Date
 scalar Void
 
 type Mutation {
-  createStock(symbol: String!): Stock
-  deleteStock(id: UUID!): UUID
+  createStock(id: String!): Stock
+  deleteStock(id: String!): UUID
 }
 
 type Query {
@@ -13,8 +13,7 @@ type Query {
 }
 
 type Stock {
-  id: UUID!
-  symbol: String!
+  id: String!
   price: Float!,
   company: String!,
   chart: [ChartValue],

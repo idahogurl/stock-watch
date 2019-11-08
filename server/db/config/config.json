@@ -1,10 +1,9 @@
 {
   "development": {
-    "username": "username",
-    "password": "password",
-    "database": "database",
-    "storage": "./dev.sqlite3",
-    "dialect": "sqlite"
+    "username": "",
+    "password": "",
+    "database": "stock_watch",
+    "dialect": "postgres"
   },
   "production": {
     "use_env_variable": "DATABASE_URL",

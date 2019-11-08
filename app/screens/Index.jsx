@@ -1,7 +1,6 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import dayjs from 'dayjs';
-import { uniqBy } from 'lodash';
 
 import GET_STOCKS from '../graphql/StockList.gql';
 
@@ -11,6 +10,8 @@ import StockChart from '../components/StockChart';
 import StockForm from '../components/StockForm';
 
 import onError from '../utils/onError';
+
+window.env = process.env.NODE_ENV;
 
 const IndexScreen = function IndexScreen() {
   const loadingStyle = {
@@ -23,35 +24,36 @@ const IndexScreen = function IndexScreen() {
   return (
     <Query query={GET_STOCKS} pollInterval={30000}>
       {({
-          loading, error, data, stopPolling,
-        }) => {
+        loading, error, data, stopPolling,
+      }) => {
         if (loading) {
           return (
             <Container additionalStyle={loadingStyle}>
               <i className="fa fa-2x fa-spin fa-spinner" />
             </Container>
-            );
+          );
         }
 
         if (error) {
           stopPolling();
-          onError(error || this.state.error);
+          onError(error);
           return null;
         }
 
         const { stocks } = data;
         return (
           <Container>
-            <div className="d-flex mt-2 align-items-end">
+            <div className="d-flex mt-2 align-items-end flex-wrap">
               <div className="flex-grow-1"><img src="./images/logo.svg" alt="Stock Watch Logo" /></div>
-              <div>From {dayjs().subtract(3, 'month').format('MM-DD-YYYY')} to {dayjs().format('MM-DD-YYYY')} </div>
+              <div>{`From ${dayjs().subtract(3, 'month').format('YYYY-MM-DD')} to ${dayjs().format('MM-DD-YYYY')}`}</div>
             </div>
             <StockChart stocks={stocks} />
             <div className="d-flex flex-wrap">
-              <StockList stocks={uniqBy(stocks, 'symbol')} />
+              <StockList stocks={stocks} />
               <StockForm />
             </div>
-          </Container>);
+          </Container>
+        );
       }}
     </Query>
   );

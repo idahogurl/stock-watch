@@ -1,0 +1,47 @@
+{
+  "name": "stock-watch",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "yarn parcel watch index.html --out-dir ../public",
+    "prod": "yarn parcel build index.html --out-dir ../public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://www.github.com/idahogurl/stock-watch"
+  },
+  "author": "Rebecca Vest",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-boost": "^0.1.10",
+    "apollo-client": "^2.3.5",
+    "awesome-notifications": "^2.2.9",
+    "axios": "^0.19.0",
+    "classnames": "^2.2.6",
+    "dayjs": "^1.7.4",
+    "fela": "^10.8.0",
+    "fela-tools": "^10.8.2",
+    "formik": "^2.0.3",
+    "google-palette": "^1.1.0",
+    "graphql": "^0.13.2",
+    "lodash": "^4.17.15",
+    "prop-types": "^15.6.1",
+    "react": "^16.4.2",
+    "react-apollo": "^2.1.6",
+    "react-dom": "^16.4.2",
+    "react-fela": "^10.8.0",
+    "react-vis": "^1.11.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.2.0",
+    "nodemon": "^1.19.4"
+  }
+}

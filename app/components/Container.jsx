@@ -3,20 +3,22 @@ import PropTypes from 'prop-types';
 import { FelaComponent } from 'react-fela';
 import classNames from 'classnames';
 
-const Container = (props) => {
-  const style = Object.assign({
+const Container = ({ additionalStyle, children }) => {
+  const style = {
     marginTop: '1em',
     marginBottom: '1em',
     paddingTop: '1em',
     backgroundColor: 'white',
     minHeight: '100vh',
-  }, props.additionalStyle);
+    ...additionalStyle,
+  };
 
   return (
     <FelaComponent
       style={style}
-      render={({ className }) => <div className={classNames('container', className)}>{props.children}</div>}
-    />
+    >
+      {({ className }) => <div className={classNames('container', className)}>{children}</div>}
+    </FelaComponent>
   );
 };
 

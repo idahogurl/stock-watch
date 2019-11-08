@@ -1,7 +1,6 @@
-mutation createStock($symbol: String!) {
-  createStock(symbol: $symbol) {
+mutation createStock($id: String!) {
+  createStock(id: $id) {
     id
-    symbol
     price
     company
     chart {
