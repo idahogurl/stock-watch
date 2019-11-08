@@ -5,7 +5,7 @@ import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 
 import { createRenderer } from 'fela';
-import { RenderProvider } from 'react-fela';
+import { RendererProvider } from 'react-fela';
 import IndexScreen from './screens/Index';
 
 const client = new ApolloClient({
@@ -17,9 +17,9 @@ const renderer = createRenderer();
 
 render(
   <ApolloProvider client={client}>
-    <RenderProvider renderer={renderer}>
+    <RendererProvider renderer={renderer}>
       <IndexScreen />
-    </RenderProvider>
+    </RendererProvider>
   </ApolloProvider>,
   document.getElementById('app'),
 );
