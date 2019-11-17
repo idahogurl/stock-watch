@@ -42,7 +42,7 @@ if (env === 'development') {
 }
 
 // Always return the main index.html, so react-router renders the route in the client
-app.get('*', (req, res) => {
+app.get('*', (_, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 

@@ -63,8 +63,9 @@ const StockForm = function StockForm() {
                   name="id"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={classNames('form-control form-control-sm mr-1', { 'is-invalid': errors.symbol })}
+                  className={classNames('form-control form-control-sm mr-1', { 'is-invalid': errors.id })}
                   placeholder="Stock symbol"
+                  required="true"
                 />
                 <button type="submit" className="btn btn-success btn-sm" disabled={isSubmitting}>
                   {isSubmitting ? (
