@@ -1,6 +1,6 @@
 const GraphQLToolTypes = require('graphql-tools-types');
 const Axios = require('axios');
-const { keyBy, isEmpty } = require('lodash');
+const { isEmpty } = require('lodash');
 const dotenv = require('dotenv');
 const { Stock } = require('../db/models');
 
@@ -33,7 +33,7 @@ const resolvers = {
 
         const stock = {
           id,
-          price: quote.close,
+          price: quote.latestPrice,
           company: companyName,
           chart: chartData,
         };
@@ -57,12 +57,13 @@ const resolvers = {
         const url = SRV_URL.replace(':symbols', symbols);
         console.log(url);
         const { data: stockData } = await Axios.get(url);
+
         const results = Object.keys(stockData).map((s) => {
           const { company: { companyName }, quote, chart } = stockData[s];
           const chartData = chart.map((c) => ({ x: new Date(c.date), y: c.close }));
           return {
             id: s,
-            price: quote.close,
+            price: quote.latestPrice,
             company: companyName,
             chart: chartData,
           };
