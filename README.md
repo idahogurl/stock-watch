@@ -11,7 +11,7 @@ Here are the specific user stories you should implement for this project:
 - I can remove stocks.
 - I can see changes in real-time when any other user adds or removes a stock. For this you will need to use Web Sockets.
 
-**Tech Stack**
+**Tech Stack**:
 
 - React
 - Node.js
