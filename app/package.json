@@ -23,7 +23,7 @@
     "formik": "^2.0.3",
     "google-palette": "^1.1.0",
     "graphql": "^0.13.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "prop-types": "^15.6.1",
     "react": "^16.4.2",
     "react-apollo": "^2.1.6",
