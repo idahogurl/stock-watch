@@ -6,12 +6,12 @@ import Card from './Card';
 class Stock extends PureComponent {
   constructor() {
     super();
-    this.deleteStock = this.deleteStock.bind(this);
+    this.handleDeleteClicked = this.handleDeleteClicked.bind(this);
   }
 
-  deleteStock() {
-    const { mutate, id } = this.props;
-    mutate({ variables: { id } })
+  handleDeleteClicked() {
+    const { deleteStock, id } = this.props;
+    deleteStock({ variables: { id } })
       .then()
       .catch();
   }
@@ -30,7 +30,7 @@ class Stock extends PureComponent {
       <FelaComponent
         style={buttonStyle}
       >
-        {({ className }) => <button type="button" aria-label="Delete Stock" className={className} title="Delete Stock" onClick={this.deleteStock}><i className="fa fa-close" /></button>}
+        {({ className }) => <button type="button" aria-label="Delete Stock" className={className} title="Delete Stock" onClick={this.handleDeleteClicked}><i className="fa fa-close" /></button>}
       </FelaComponent>
     );
 
@@ -56,7 +56,7 @@ Stock.propTypes = {
   id: PropTypes.string.isRequired,
   company: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  mutate: PropTypes.func.isRequired,
+  deleteStock: PropTypes.func.isRequired,
 };
 
 export default Stock;

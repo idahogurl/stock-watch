@@ -1,0 +1,6 @@
+fragment NewStock on Stock {
+  id,
+  price,
+  company,
+  chart,
+}
