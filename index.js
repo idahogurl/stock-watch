@@ -24,7 +24,7 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 app.use('/graphql', graphqlExpress(() => ({ schema })));
 const env = process.env.NODE_ENV || 'development';
-
+console.log('ENV', env);
 if (env === 'development') {
   app.get(
     '/graphiql',
@@ -38,6 +38,7 @@ if (env === 'development') {
     captureUncaught: true,
     captureUnhandledRejections: true,
   });
+  rollbar.info('server started');
   app.use(rollbar.errorHandler());
 }
 
