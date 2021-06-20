@@ -8,7 +8,9 @@
     "db:migrate": "yarn sequelize db:migrate --config ./server/db/config/config.json --migrations-path ./server/db/migrations --models-path ./server/db/models",
     "create:migration": "yarn sequelize migration:generate --config ./server/db/config/config.json --migrations-path ./server/db/migrations --models-path ./sever/db/models",
     "db:migrate:undo": "yarn sequelize db:migrate:undo --config ./server/db/config/config.json --migrations-path ./server/db/migrations --models-path ./server/db/models",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -31,7 +33,8 @@
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
     "sequelize-heroku": "^2.1.6",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "snyk": "^1.639.0"
   },
   "devDependencies": {
     "eslint": "^7.29.0",
@@ -40,5 +43,6 @@
     "nodemon": "^2.0.7",
     "parcel": "^1.12.4",
     "sqlite3": "^5.0.2"
-  }
+  },
+  "snyk": true
 }

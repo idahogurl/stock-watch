@@ -1,0 +1,10 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.19.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - graphql-tools > @graphql-tools/relay-operation-optimizer > relay-compiler > @babel/types > lodash:
+        patched: '2021-06-20T06:52:59.442Z'
+    - graphql-tools > @graphql-tools/relay-operation-optimizer > relay-compiler > babel-preset-fbjs > @babel/plugin-transform-react-jsx > @babel/helper-builder-react-jsx > @babel/types > lodash:
+        patched: '2021-06-20T06:52:59.442Z'
