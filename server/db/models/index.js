@@ -15,14 +15,10 @@ var config = require(`${__dirname}/../config/config.json`)[env];
 var options = env === 'development' ? { logging: console.log } : {};
 
 if (env ==='prod' && process.env.DATABASE_URL) {
-  var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
   // the application is executed on Heroku ... use the postgres database
-  var sequelize = new Sequelize(match[5], match[1], match[2], {
-    dialect: 'postgres',
-    protocol: 'postgres',
-    port: match[4],
-    host: match[3],
-    logging: false
+  var sequelize = new Sequelize(process.env.DATABASE_URL, {
+    ...config,
+    ...options
   });
 } else {
   // the application is executed on the local machine ... use sqlite
