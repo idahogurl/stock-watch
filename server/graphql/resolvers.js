@@ -5,6 +5,14 @@ const dotenv = require('dotenv');
 const { Stock } = require('../db/models');
 
 dotenv.config();
+
+var Rollbar = require('rollbar');
+var rollbar = new Rollbar({
+  accessToken: 'POST_SERVER_ITEM_ACCESS_TOKEN',
+  captureUncaught: true,
+  captureUnhandledRejections: true
+});
+
 const SRV_URL = `https://cloud.iexapis.com/stable/stock/market/batch?symbols=:symbols&types=quote,company,chart&range=3m&token=${process.env.IEXCLOUD_SECRET}`;
 
 const resolvers = {
@@ -52,14 +60,14 @@ const resolvers = {
   Query: {
     async stocks() {
       const stocks = await Stock.findAll({ raw: true });
-      console.log('Stocks', stocks.length);
+      rollbar.log('Stocks', stocks.length);
       if (stocks.length) {
         const symbols = stocks.map((s) => s.id).join(',');
         const url = SRV_URL.replace(':symbols', symbols);
-        console.log('url', url);
+        rollbar.log('url', url);
         
         const { data: stockData } = await Axios.get(url);
-        console.log('stockData', stockData);
+        rollbar.log('stockData', stockData);
       
         const results = Object.keys(stockData).map((s) => {
           const { company: { companyName }, quote, chart } = stockData[s];
