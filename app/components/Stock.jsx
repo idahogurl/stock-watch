@@ -1,8 +1,15 @@
 import React, { PureComponent } from 'react';
+import { gql } from '@apollo/client';
 import PropTypes from 'prop-types';
 import { FelaComponent } from 'react-fela';
+
 import Card from './Card';
 
+import stockGql from '../graphql/ClientStock.gql';
+
+window.env = process.env.NODE_ENV;
+
+const STOCK_FRAGMENT = gql(stockGql);
 class Stock extends PureComponent {
   constructor() {
     super();
@@ -11,7 +18,33 @@ class Stock extends PureComponent {
 
   handleDeleteClicked() {
     const { deleteStock, id } = this.props;
-    deleteStock({ variables: { id } })
+    deleteStock({
+      variables: { id },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        deleteStock: {
+          id,
+        },
+      },
+      update(cache, { data: { deleteStock: { id } }}) {
+        // We get a single item.
+        const stock = cache.readFragment({
+          id: `Stock:${id}`,
+          fragment: STOCK_FRAGMENT,
+        });
+        // Then, we update it.
+        if (stock) {
+          cache.writeFragment({
+            id: `Stock:${id}`,
+            fragment: STOCK_FRAGMENT,
+            data: {
+              ...stock,
+              _deleted: true,
+            },
+          });
+        }
+      }
+    })
       .then()
       .catch();
   }

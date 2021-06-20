@@ -1,11 +1,6 @@
 query getStocks {
   stocks {
-    id
-    company
-    price
-    chart {
-      x
-      y
-    }
+    ...ClientStock
   },
 }
+

@@ -1,6 +1,8 @@
 {
   "development": {
-    "use_env_variable": "DATABASE_URL",
+    "username": "",
+    "password": "",
+    "database": "stock_watch",
     "dialect": "postgres"
   },
   "production": {

@@ -1,8 +1,13 @@
 import React from 'react';
+import { gql } from '@apollo/client'
 import { Formik } from 'formik';
 import classNames from 'classnames';
 
 import Card from './Card';
+
+import stockGql from '../graphql/ClientStock.gql';
+
+const STOCK_FRAGMENT = gql(stockGql);
 
 const StockForm = function StockForm({ createStock }) {
   return (
@@ -22,7 +27,30 @@ const StockForm = function StockForm({ createStock }) {
       }}
 
       onSubmit={(values, { setSubmitting, setFieldError, resetForm }) => {
-        createStock({ variables: { __typename: 'Stock', ...values } })
+        createStock({ variables: { __typename: 'Stock', ...values },
+          update(cache, { data: { createStock } }) {
+            cache.modify({
+              fields: {
+                stocks(existingStockRefs = [], { readField }) {
+                  const newStockRef = cache.writeFragment({
+                    data: { ...createStock },
+                    fragment: STOCK_FRAGMENT
+                  });
+            
+                  // Quick safety check - if the new stock is already
+                  // present in the cache, we don't need to add it again.
+                  if (existingStockRefs.some(
+                    ref => readField('id', ref) === newStockRef.id
+                  )) {
+                    return existingStockRefs;
+                  }
+            
+                  return [...existingStockRefs, newStockRef];
+                }
+              }
+            })
+          }
+        })
           .then(() => {
             setSubmitting(false);
             resetForm();

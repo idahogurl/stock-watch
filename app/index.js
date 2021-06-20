@@ -15,7 +15,14 @@ const client = new ApolloClient({
   uri: '/graphql',
   cache: new InMemoryCache(),
   credentials: 'same-origin',
+  resolvers: {
+    Stock: {
+      _deleted: stock => Boolean(stock._deleted),
+    }
+  },
 });
+
+
 
 const renderer = createRenderer();
 

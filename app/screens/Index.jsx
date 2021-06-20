@@ -1,12 +1,11 @@
 import React from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import dayjs from 'dayjs';
-import gql from "graphql-tag";
 
 import getStocksGql from '../graphql/GetStocks.gql';
 import createStockGql from '../graphql/CreateStock.gql'
 import deleteStockGql from '../graphql/DeleteStock.gql';
-import newStockGql from '../graphql/NewStock.gql';
+import clientStockGql from '../graphql/ClientStock.gql';
 
 import Container from '../components/Container';
 import StockChart from '../components/StockChart';
@@ -17,9 +16,8 @@ import onError from '../utils/onError';
 
 window.env = process.env.NODE_ENV;
 
-const GET_STOCKS = gql(getStocksGql);
+const GET_STOCKS = gql(getStocksGql + '\n' + clientStockGql);
 const CREATE_STOCK = gql(createStockGql);
-const NEW_STOCK = gql(newStockGql);
 const DELETE_STOCK = gql(deleteStockGql);
 
 const IndexScreen = function IndexScreen() {
@@ -31,53 +29,9 @@ const IndexScreen = function IndexScreen() {
   };
 
   const { loading, error, data, stopPolling } = useQuery(GET_STOCKS);
-
-  const [createStock] = useMutation(CREATE_STOCK, {
-    update(cache, { data: { createStock } }) {
-      cache.modify({
-        fields: {
-          stocks(existingStockRefs = [], { readField }) {
-            const newStockRef = cache.writeFragment({
-              data: createStock,
-              fragment: NEW_STOCK
-            });
-      
-            // Quick safety check - if the new stock is already
-            // present in the cache, we don't need to add it again.
-            if (existingStockRefs.some(
-              ref => readField('id', ref) === newStockRef.id
-            )) {
-              return existingStockRefs;
-            }
-      
-            return [...existingStockRefs, newStockRef];
-          }
-        }
-      })
-    }
-  });
-
-  const [deleteStock] = useMutation(DELETE_STOCK, {
-    update: (cache, { data: { deleteStock } }) => {
-      deleteStock.__typename = 'Stock';
-
-      cache.modify({
-        id: cache.identify(deleteStock),
-        fields: {
-          stocks(existingStockRefs, { readField }) {
-            console.log('DELETE', existingStockRefs);
-            const newStocks = existingStockRefs.filter(
-              (stockRef) => {
-                console.log(stockRef)
-                return deleteStock.id !== readField('id', stockRef)
-              }
-            );
-            return newStocks;
-          },
-        },
-      });
-    }
-  });
+  
+  const [createStock] = useMutation(CREATE_STOCK);
+  const [deleteStock] = useMutation(DELETE_STOCK);
 
   if (loading) {
     return (
@@ -102,7 +56,7 @@ const IndexScreen = function IndexScreen() {
       </div>
       <StockChart stocks={stocks} />
       <div className="d-flex flex-wrap">
-        {stocks.map((s) => {
+        {stocks.filter(s => !s._deleted).map((s) => {
           return (<Stock
             key={s.id}
             id={s.id}

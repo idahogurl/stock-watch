@@ -1,0 +1,10 @@
+fragment ClientStock on Stock {
+  id
+  company
+  price
+  chart {
+    x
+    y
+  },
+  _deleted @client
+}
