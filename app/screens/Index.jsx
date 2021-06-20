@@ -47,7 +47,7 @@ const IndexScreen = function IndexScreen() {
     return null;
   }
 
-  const { stocks } = data;
+  const stocks = data.stocks.filter(s => !s._deleted);
   return (
     <Container>
       <div className="d-flex mt-2 align-items-end flex-wrap">
@@ -56,7 +56,7 @@ const IndexScreen = function IndexScreen() {
       </div>
       <StockChart stocks={stocks} />
       <div className="d-flex flex-wrap">
-        {stocks.filter(s => !s._deleted).map((s) => {
+        {stocks.map((s) => {
           return (<Stock
             key={s.id}
             id={s.id}
