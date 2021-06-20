@@ -52,12 +52,14 @@ const resolvers = {
   Query: {
     async stocks() {
       const stocks = await Stock.findAll({ raw: true });
-      
+      console.log('Stocks', stocks.length);
       if (stocks.length) {
         const symbols = stocks.map((s) => s.id).join(',');
         const url = SRV_URL.replace(':symbols', symbols);
+        console.log('url', url);
         
         const { data: stockData } = await Axios.get(url);
+        console.log('stockData', stockData);
       
         const results = Object.keys(stockData).map((s) => {
           const { company: { companyName }, quote, chart } = stockData[s];
