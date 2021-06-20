@@ -2,8 +2,8 @@
   "development": {
     "username": "",
     "password": "",
-    "database": "stock_watch",
-    "dialect": "postgres"
+    "storage": "./server/stock_watch.db",
+    "dialect": "sqlite"
   },
   "production": {
     "use_env_variable": "DATABASE_URL",

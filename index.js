@@ -1,38 +1,29 @@
 /* eslint-disable no-console */
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const path = require('path');
-const { createServer } = require('http');
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const fs = require('fs');
-const { makeExecutableSchema } = require('graphql-tools');
+
 const dotenv = require('dotenv');
 const Rollbar = require('rollbar');
 const resolvers = require('./server/graphql/resolvers');
 
 dotenv.config();
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.use('/', express.static('public'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+async function startApolloServer() {
 
 const typeDefs = fs.readFileSync('./server/graphql/schema.gql', 'utf8');
-const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-app.use('/graphql', graphqlExpress(() => ({ schema })));
+const app = express();
+app.use('/', express.static('public'));
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+
 const env = process.env.NODE_ENV || 'development';
 console.log('ENV', env);
-if (env === 'development') {
-  app.get(
-    '/graphiql',
-    graphiqlExpress({
-      endpointURL: '/graphql',
-    }),
-  );
-} else {
+if (env === 'production') {
+  console.log('PROD');
   const rollbar = new Rollbar({
     accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
     captureUncaught: true,
@@ -47,7 +38,14 @@ app.get('*', (_, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
-const httpServer = createServer(app);
-httpServer.listen(port, () => {
-  console.log('Server Started at port 3000');
-});
+const server = new ApolloServer({ typeDefs, resolvers });
+
+await server.start();
+server.applyMiddleware({ app });
+
+const port = process.env.PORT || 3000;
+await new Promise(resolve => app.listen({ port }, resolve));
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`);
+}
+
+startApolloServer();
