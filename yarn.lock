@@ -8375,10 +8375,10 @@ sequelize-cli@^6.2.0:
     umzug "^2.3.0"
     yargs "^13.1.0"
 
-sequelize-heroku@^2.1.5:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/sequelize-heroku/-/sequelize-heroku-2.1.6.tgz#0cbe4d1e7aa3c649a53edce067269a8b8da2d251"
-  integrity sha512-4/h0xYn/C8v1g3kWjqcBZjoUwst8K/jCNuuLhu6tusdp/iISo49gIg/qQJQ6ttxIGd3pt1aSVm0tkvTjITpbkg==
+sequelize-heroku@2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/sequelize-heroku/-/sequelize-heroku-2.1.4.tgz#04b3b1c11e42e431cf7ffb08dee6e1ea1c13e7d5"
+  integrity sha512-eVt9/UE1hQC1jsRHhCnL2rfGBn8FSeLkhdaxRxpTM/6bC3hVGwe3Jw0R2FlOodxaL7GBS2o7JGtDSz5rdRvcJg==
 
 sequelize-pool@^6.0.0:
   version "6.1.0"
