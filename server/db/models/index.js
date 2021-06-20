@@ -13,7 +13,7 @@ var basename = path.basename(__filename);
 var env = process.env.NODE_ENV || 'development';
 var config = require(`${__dirname}/../config/config.json`)[env];
 var options = env === 'development' ? { logging: console.log } : {};
-
+console.log('process.env.DATABASE_URL', process.env.DATABASE_URL)
 if (env ==='prod' && process.env.DATABASE_URL) {
   // the application is executed on Heroku ... use the postgres database
   var sequelize = new Sequelize(process.env.DATABASE_URL, {
