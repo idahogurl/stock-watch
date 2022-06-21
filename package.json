@@ -17,7 +17,7 @@
   "author": "Rebecca Vest",
   "license": "ISC",
   "dependencies": {
-    "apollo-server-express": "^2.25.1",
+    "apollo-server-express": "^3.0.0",
     "axios": "^0.21.1",
     "dayjs": "^1.10.5",
     "dotenv": "^10.0.0",
