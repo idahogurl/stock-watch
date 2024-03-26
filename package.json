@@ -17,11 +17,11 @@
   "author": "Rebecca Vest",
   "license": "ISC",
   "dependencies": {
-    "apollo-server-express": "^2.25.1",
+    "apollo-server-express": "^3.13.0",
     "axios": "^0.21.1",
     "dayjs": "^1.10.5",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
+    "express": "^4.19.2",
     "graphql": "^15.5.0",
     "graphql-tools": "^7.0.5",
     "graphql-tools-types": "^1.3.1",
