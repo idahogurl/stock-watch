@@ -18,7 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^2.25.1",
-    "axios": "^0.21.1",
+    "axios": "^1.6.8",
     "dayjs": "^1.10.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -28,8 +28,8 @@
     "lodash": "^4.17.21",
     "pg": "^8.6.0",
     "rollbar": "^2.22.0",
-    "sequelize": "^6.6.2",
-    "sequelize-cli": "^6.2.0",
+    "sequelize": "^6.33.0",
+    "sequelize-cli": "^6.5.1",
     "sequelize-heroku": "2.1.4",
     "uuid": "^8.3.2"
   },
